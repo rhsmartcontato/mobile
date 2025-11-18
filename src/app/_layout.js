@@ -3,7 +3,7 @@ import { AppProvider } from "../hooks";
 import { useAuth } from "../hooks/Auth";
 import { useEffect } from "react";
 
-export default function Layout() {
+const StackLayout = () => {
     const { user } = useAuth();
     const segments = useSegments();
 
@@ -20,11 +20,17 @@ export default function Layout() {
     }, [user]);
 
     return (
-        <AppProvider>
-           <Stack> 
-            <Stack.Screen name="index" />
-            <Stack.Screen name="(protected)" />
+        <Stack> 
+            <Stack.Screen name="index" options={{ headerShown: false }}/>
+            <Stack.Screen name="(protected)" options={{ headerShown: false }}/>
            </Stack>
+    );
+};
+
+export default function Layout() {
+    return (
+        <AppProvider>
+           <StackLayout />
         </AppProvider>
     );
 }
