@@ -6,7 +6,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const AuthContext = createContext({});
 
 export const Role = {
-    ALUNO: "ALUNO"
+    SUPER: "SUPER",
+    ADM: "ADM",
+    USER: "USER"
 }
 
 export function AuthProvider({ children }) {

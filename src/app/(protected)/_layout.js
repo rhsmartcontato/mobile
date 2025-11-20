@@ -14,14 +14,23 @@ function CustomDrawerContent(props) {
 
   return (
     <View style={{ flex: 1 }}>
-        <View style={{ marginTop: 20 }}>
-            <Image source={{ 
-                url: "https://reactnative.dev/img/tiny_logo.png",
-
-            }}/>
-            <Text style={{ textAlign: "center", fontSize: 20 }}>
-                {user.user.nome}
-            </Text>
+        <View 
+        style={{ 
+            marginTop: 20, 
+            justifyContent: "center", 
+            alignItems: "center", 
+            backgroundColor: "#f0f0f0",
+            paddingVertical: 10,
+        }}>
+            <Image 
+            source={
+                require("../../assets/perfil.png")
+                } 
+                style={{ width: 100, height: 100, borderRadius: 50, margin: 10 }}
+                />
+                <Text style={{ textAlign: "center", fontSize: 16, fontFamily: "regular" }}>
+                    {user?.user?.nome}
+                </Text>
         </View>
         <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
