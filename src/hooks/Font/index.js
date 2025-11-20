@@ -18,6 +18,11 @@ export function FontProvider({ children }) {
     italic: require("../../assets/fonts/Montserrat-Italic.ttf"),
     bolditalic: require("../../assets/fonts/Montserrat-BoldItalic.ttf"),
     blackitalic: require("../../assets/fonts/Montserrat-BlackItalic.ttf"),
+    albertusnovathin: require("../../assets/fonts/albertusnovathin.otf"),
+    albertusnovalight: require("../../assets/fonts/albertusnovalight.otf"),
+    albertusnovablack: require("../../assets/fonts/albertusnovablack.otf"),
+    albertusnova: require("../../assets/fonts/albertusnova.otf"),
+    albertusnova_bold: require("../../assets/fonts/albertusnova_bold.otf"),
 
   });
 
@@ -25,7 +30,7 @@ export function FontProvider({ children }) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center"}}>
         <Text style={{ fontSize: 28, marginTop: 15 }}>
-          carregando as fontes...
+          Carregando as fontes...
         </Text>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>

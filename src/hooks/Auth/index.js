@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { View, Text, ActivityIndicator } from "react-native";
 import { useUsersDatabase } from "../../database/useUsersDatabase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AuthContext = createContext({});
 
 export const Role = {
-    SUPER: "SUPER",
-    ADM: "ADM",
-    USER: "USER"
+    ALUNO: "ALUNO"
 }
 
 export function AuthProvider({ children }) {
@@ -18,32 +18,64 @@ export function AuthProvider({ children }) {
 
     const { authUser } = useUsersDatabase();
 
-    const signIn = async ({email, password}) => {
-        const response = await authUser({ email, password });
+    useEffect(() => {
+        const loadStorageData = async () => {
+            const storageUser = await AsyncStorage.getItem("@payment:user");
 
-        if (!response) {
-            setUser({
-                autenticated: false, 
-                user: null,
-                role: null,
-            });
-        }
+            if (storageUser) {
+                setUser({
+                    autenticated: true,
+                    user: JSON.parse(storageUser),
+                    role: JSON.parse(storageUser).role,
+                });
+            } else {
+                setUser({
+                    autenticated: false,
+                    user: null,
+                    role: null,
+                });
+            }
+        };
 
-        setUser({
-                autenticated: true, 
-                user: response,
-                role: response.role,
-            });
+        loadStorageData();
+    }, []);
 
-    };
+
+    const signIn = async ({ email, password }) => {
+    console.log("Email digitado:", email);
+    console.log("Senha digitada:", password);
+
+    const response = await authUser({ email, password });
+    console.log("Resposta do banco:", response);
+
+    if (!response) {
+        throw new Error("Usuário ou senha inválidos");
+    }
+
+    await AsyncStorage.setItem("@payment:user", JSON.stringify(response));
+
+    setUser({
+        autenticated: true, 
+        user: response,
+        role: response.role,
+    });
+};
 
     const signOut = async () => {
+        await AsyncStorage.removeItem("@payment:user");
         setUser({});
     };
 
-    useEffect(() => {
-        console.log("AuthProvider: ", user)
-    }, [user]);
+    if (user?.autenticated === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center"}}>
+        <Text style={{ fontSize: 28, marginTop: 15 }}>
+          Carregando dados do usuário...
+        </Text>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    )
+  }
 
     return (
         <AuthContext.Provider value={{ user, signIn, signOut }}>
