@@ -1,169 +1,160 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TextInput, Image, Button, Alert, BackHandler } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { useAuth } from "../hooks/Auth";
+import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
 import { router } from "expo-router";
-import { TouchableOpacity } from "react-native";
+import { useAuth } from "../hooks/Auth";
 
+export default function Login() {
+    const { signIn } = useAuth();
 
-export default function App() {
-  const { signIn, signOut } = useAuth();
-  const [email, setEmail] = useState("aluno@email.com");
-  const [password, setPassword] = useState("A123456a!");
-  const [passwordVisibility, setPasswordVisibility] = useState(true);
+    function handleGoogleLogin() {
+        signIn({
+            nome: "Usuário Google",
+            email: "alunouser@gmail.com",
+            role: "ALUNO",
+        });
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisibility(!passwordVisibility);
-  };
-
-  const handleEntrarSuper = async () => {
-    try {
-      await signIn({ email, password });
-      router.replace("/");
-    } catch (error) {
-      Alert.alert("Erro", error.message);
-      console.log(error);
+        router.replace("/(protected)");
     }
-  };
 
-  return (
-    <View style={styles.container}>
-      
+    function handleFacebookLogin() {
+        signIn({
+            nome: "Usuário Facebook",
+            email: "alunouser@facebook.com",
+            role: "ALUNO",
+        });
 
-      <Image 
-        source={require("../assets/lampa.png")} 
-        style={styles.lamp}
-      />
+        router.replace("/(protected)");
+    }
 
-      <Text style={styles.welcome}>Bem-vindo ao</Text>
-      <Text style={styles.title}>StudySync</Text>
-      <Text style={styles.subtitle}>Organize tarefas de estudo{'\n'}de forma eficiente</Text>
+    return (
+        <View
+            style={{
+                flex: 1,
+                backgroundColor: "#333",
+                justifyContent: "center",
+                alignItems: "center",
+                paddingHorizontal: 25,
+                gap: 25,
+            }}
+        >
 
-      <View style={styles.inputbox}>
-        <Ionicons name="mail-open-outline" size={20} color="black" />
-        <TextInput
-          style={styles.emailinput}
-          placeholder="E-mail"
-          value={email}
-          onChangeText={setEmail}
-        />
-      </View>
+            <Image
+                source={require("../assets/lampa.png")}
+                style={{ width: 90, height: 90, marginBottom: 15 }}
+            />
 
-      <View style={styles.inputbox}>
-        <Ionicons name="lock-closed-outline" size={20} color="black" />
-        <TextInput
-          style={styles.emailinput}
-          placeholder="Senha"
-          secureTextEntry={passwordVisibility}
-          value={password}
-          onChangeText={setPassword}
-        />
+            <Text style={{ fontSize: 28, color: "#fff", fontFamily: "bold" }}>
+                Bem-vindo ao
+            </Text>
 
-        <Ionicons
-          name={passwordVisibility ? "eye-outline" : "eye-off-outline"}
-          size={20}
-          color="black"
-          onPress={togglePasswordVisibility}
-        />
-      </View>
+            <Text
+                style={{
+                    fontSize: 45,
+                    color: "#fff",
+                    fontFamily: "albertusnova_bold",
+                    marginTop: -10,
+                }}
+            >
+                StudySync
+            </Text>
 
-      <View style={styles.buttons}>
+            <Text
+                style={{
+                    fontSize: 22,
+                    textAlign: "center",
+                    color: "#fff",
+                    fontFamily: "semibold",
+                    marginTop: -5,
+                }}
+            >
+                Organize tarefas de estudo{'\n'}de forma eficiente
+            </Text>
 
-        <TouchableOpacity style={styles.buttonPrimary} onPress={handleEntrarSuper}>
-          <Text style={styles.buttonText}>Entrar</Text>
-        </TouchableOpacity>
+            <TouchableOpacity
+                style={{
+                    backgroundColor: "#fff",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingVertical: 14,
+                    paddingHorizontal: 20,
+                    borderRadius: 30,
+                    width: "100%",
+                    gap: 10,
+                }}
+                onPress={handleGoogleLogin}
+            >
+                <Image
+                    source={require("../assets/google.png")}
+                    style={{ width: 25, height: 26 }}
+                />
+                <Text style={{ fontSize: 18, color: "#777" }}>
+                    Entrar com Google
+                </Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonPrimary} onPress={() => router.push("/about")}>
-          <Text style={styles.buttonText}>Sobre</Text>
-        </TouchableOpacity>
+            <TouchableOpacity
+                style={{
+                    backgroundColor: "#fff",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingVertical: 14,
+                    paddingHorizontal: 20,
+                    borderRadius: 30,
+                    width: "100%",
+                    gap: 10,
+                }}
+                onPress={handleFacebookLogin}
+            >
+                <Image
+                    source={require("../assets/facebook.webp")}
+                    style={{ width: 26, height: 26 }}
+                />
+                <Text style={{ fontSize: 18, color: "#777" }}>
+                    Entrar com Facebook
+                </Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonExit} onPress={() => BackHandler.exitApp()}>
-          <Text style={styles.buttonText}>Sair do aplicativo</Text>
-       </TouchableOpacity>
+            <TouchableOpacity
+                style={{
+                    backgroundColor: "#fff",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingVertical: 14,
+                    paddingHorizontal: 20,
+                    borderRadius: 30,
+                    width: "100%",
+                    gap: 10,
+                }}
+                onPress={() => router.push("/loginEmail")}
+            >
+                <Image
+                    source={require("../assets/gmail.png")}
+                    style={{ width: 26, height: 20 }}
+                />
+                <Text style={{ fontSize: 18, color: "#777" }}>
+                    Entrar com E-mail
+                </Text>
+            </TouchableOpacity>
 
-      </View>
+            <Text style={{ color: "#fff", marginTop: 10 }}>
+                já tem uma conta?{" "}
+                <Text
+                    style={{ textDecorationLine: "underline", color: "#78a8ff" }}
+                    onPress={() => router.push("/loginEmail")}
+                >
+                    Entrar
+                </Text>
+            </Text>
 
-      <StatusBar style="light" />
-    </View>
-  );
+            <Text
+                style={{
+                    textDecorationLine: "underline",
+                    color: "#78a8ff",
+                    fontSize: 18,
+                }}
+                onPress={() => router.replace("/(protected)")}
+            >
+                entrar sem conta
+            </Text>
+        </View>
+    );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#333333",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    gap: 15,
-  },
-
-  lamp: {
-    width: 70,
-    height: 70,
-    marginBottom: 10,
-  },
-
-  welcome: {
-    fontSize: 25,
-    color: "#fff",
-    fontFamily: "semibold",
-  },
-
-  title: {
-    fontSize: 50,
-    fontFamily: "albertusnova_bold",
-    color: "#fff",
-    marginBottom: 1,
-  },
-
-  subtitle: {
-    fontSize: 23,
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "semibold",
-    marginBottom: 12,
-  },
-
-  inputbox: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    padding: 10,
-    borderRadius: 12,
-    width: "100%",
-    gap: 10,
-  },
-
-  emailinput: {
-    flex: 1,
-    fontSize: 18,
-    fontFamily: "regular",
-  },
-
-  buttons: {
-    width: "100%",
-    gap: 10,
-    marginTop: 10,
-  },
-  buttonPrimary: {
-  backgroundColor: "#25bb54",
-  paddingVertical: 15,
-  borderRadius: 12,
-  alignItems: "center",
-},
-
-buttonExit: {
-  backgroundColor: "#f55a5a",
-  paddingVertical: 15,
-  borderRadius: 12,
-  alignItems: "center",
-},
-
-buttonText: {
-  color: "#fff",
-  fontSize: 20,
-  fontFamily: "clear sans bold", 
-},
-});

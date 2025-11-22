@@ -1,117 +1,64 @@
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Drawer } from "expo-router/drawer";
-import 'react-native-gesture-handler';
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
-import { TouchableOpacity, View, Text, Image } from "react-native";
-import { useAuth } from "../../hooks/Auth";
-import Entypo from '@expo/vector-icons/Entypo';
+import { Tabs } from "expo-router";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
-function CustomDrawerContent(props) {
-  const { user, signOut } = useAuth();
-
-  return (
-    <View style={{ flex: 1 }}>
-      <View
-        style={{
-          marginTop: 20,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#f0f0f0",
-          paddingVertical: 10,
-        }}
-      >
-        <Image
-          source={require("../../assets/perfil.png")}
-          style={{
-            width: 100,
-            height: 100,
-            borderRadius: 50,
-            margin: 10,
-          }}
-        />
-
-        <Text
-          style={{
-            textAlign: "center",
-            fontSize: 16,
-            fontFamily: "regular",
-          }}
+export default function ProtectedLayout() {
+    return (
+        <Tabs
+            screenOptions={{
+                headerShown: false,
+                tabBarStyle: { backgroundColor: "#1d1d1d" },
+                tabBarActiveTintColor: "white",
+            }}
         >
-          {user?.user?.nome}
-        </Text>
-      </View>
 
-      <DrawerContentScrollView {...props}>
-        <DrawerItemList {...props} />
-      </DrawerContentScrollView>
+            <Tabs.Screen
+                name="index"
+                options={{
+                    title: "Início",
+                    tabBarIcon: ({ color }) => (
+                        <Ionicons name="home-outline" size={26} color={color} />
+                    ),
+                }}
+            />
 
-      <TouchableOpacity
-        onPress={() => signOut()}
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          height: 50,
-          margin: 10,
-          backgroundColor: "#f55a5a",
-          borderRadius: 5,
-        }}
-      >
-        <Text style={{ color: "white", fontFamily: "clear sans bold" }}>
-          Sair da conta
-        </Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
+            <Tabs.Screen
+                name="timeline"
+                options={{
+                    title: "Cronograma",
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="calendar-month-outline" size={26} color={color} />
+                    ),
+                }}
+            />
 
-const DrawerLayout = () => {
-  return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
-        <Drawer.Screen
-          name="index"
-          options={{
-            drawerLabel: "Início",
-            headerTitle: "Início",
-            drawerIcon: () => <Ionicons name="home" size={20} color="black" />,
-          }}
-        />
 
-        <Drawer.Screen
-          name="timeline"
-          options={{
-            drawerLabel: "Cronograma",
-            headerTitle: "Cronograma",
-            drawerIcon: () => <MaterialIcons name="view-timeline" size={20} color="black" />,
-          }}
-        />
+            <Tabs.Screen
+                name="progress"
+                options={{
+                    title: "Matéria",
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="notebook-outline" size={26} color={color} />
+                    ),
+                }}
+            />
 
-        <Drawer.Screen
-          name="progress"
-          options={{
-            drawerLabel: "Progresso nas matérias",
-            headerTitle: "Progresso nas matérias",
-            drawerIcon: () => <Entypo name="progress-full" size={20} color="black" />
-          }}
-        />
+            <Tabs.Screen
+                name="settings/index"
+                options={{
+                    title: "Configurações",
+                    tabBarIcon: ({ color }) => (
+                        <Ionicons name="settings-outline" size={26} color={color} />
+                    ),
+                }}
+            />
 
-        <Drawer.Screen
-          name="settings"
-          options={{
-            drawerLabel: "Configurações",
-            headerTitle: "Configurações",
-            drawerIcon: () => <Feather name="settings" size={20} color="black" />,
-          }}
-        />
-      </Drawer>
-    </GestureHandlerRootView>
-  );
-};
+            <Tabs.Screen name="settings/profile" options={{ href: null }} />
+            <Tabs.Screen name="settings/notifications" options={{ href: null }} />
+            <Tabs.Screen name="settings/stats" options={{ href: null }} />
+            <Tabs.Screen name="settings/email" options={{ href: null }} />
+            <Tabs.Screen name="settings/password" options={{ href: null }} />
+            <Tabs.Screen name="settings/subjects" options={{ href: null }} />
 
-export default function Layout() {
-  return <DrawerLayout />;
+        </Tabs>
+    );
 }

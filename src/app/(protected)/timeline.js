@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 
 export default function Timeline() {
@@ -7,7 +8,6 @@ export default function Timeline() {
             contentContainerStyle={{ padding: 20, paddingBottom: 80 }}
             showsVerticalScrollIndicator={false}
         >
-            {/* Calendário */}
             <View 
                 style={{
                     backgroundColor: "white",
@@ -20,7 +20,6 @@ export default function Timeline() {
                     Novembro 2025
                 </Text>
 
-                {/* Cabeçalho Dias */}
                 <View 
                     style={{ 
                         flexDirection: "row", 
@@ -33,7 +32,6 @@ export default function Timeline() {
                     ))}
                 </View>
 
-                {/* Números do Calendário */}
                 <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 10 }}>
                     {[
                         "", "", "", "", "1","2","3",
@@ -85,7 +83,7 @@ export default function Timeline() {
                 <View style={{ backgroundColor: "#e7e7e7", padding: 12, borderRadius: 10, marginBottom: 10 }}>
                     <Text style={{ fontSize: 18, fontWeight: "bold" }}>Trabalho de matemática</Text>
                     <Text style={{ marginTop: 5 }}>
-                        Vencimento: <Text style={{ fontWeight: "600" }}>15 de maio</Text> | Prioridade: 
+                        Vencimento: <Text style={{ fontWeight: "600" }}>15 de novembro</Text> | Prioridade: 
                         <Text style={{ color: "green", fontWeight: "bold" }}> Alta</Text>
                     </Text>
                 </View>
@@ -94,7 +92,7 @@ export default function Timeline() {
                 <View style={{ backgroundColor: "#e7e7e7", padding: 12, borderRadius: 10, marginBottom: 10 }}>
                     <Text style={{ fontSize: 18, fontWeight: "bold" }}>Projeto de ciências</Text>
                     <Text style={{ marginTop: 5 }}>
-                        Prazo: <Text style={{ fontWeight: "600" }}>29 de maio</Text> | Prioridade:
+                        Prazo: <Text style={{ fontWeight: "600" }}>29 de novembro</Text> | Prioridade:
                         <Text style={{ color: "#4287f5", fontWeight: "bold" }}> Média</Text>
                     </Text>
                 </View>
@@ -103,25 +101,26 @@ export default function Timeline() {
                 <View style={{ backgroundColor: "#e7e7e7", padding: 12, borderRadius: 10 }}>
                     <Text style={{ fontSize: 18, fontWeight: "bold" }}>Apresentação de história</Text>
                     <Text style={{ marginTop: 5 }}>
-                        Prazo: <Text style={{ fontWeight: "600" }}>20 de junho</Text> | Prioridade:
+                        Prazo: <Text style={{ fontWeight: "600" }}>20 de novembro</Text> | Prioridade:
                         <Text style={{ color: "red", fontWeight: "bold" }}> Baixa</Text>
                     </Text>
                 </View>
 
-                {/* Botão */}
                 <TouchableOpacity
+                    onPress={() => router.push("/progress")}
                     style={{
-                        backgroundColor: "#00c853",
-                        padding: 15,
-                        borderRadius: 12,
-                        marginTop: 25,
-                        alignItems: "center"
+                    backgroundColor: "#00c853",
+                    padding: 15,
+                    borderRadius: 12,
+                    marginTop: 25,
+                    alignItems: "center"
                     }}
                 >
                     <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
-                        VER MEU PROGRESSO
+                      VER MEU PROGRESSO
                     </Text>
                 </TouchableOpacity>
+
             </View>
         </ScrollView>
     );

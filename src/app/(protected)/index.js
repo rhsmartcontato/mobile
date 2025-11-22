@@ -1,19 +1,69 @@
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { router } from "expo-router";
 
 export default function Home() {
+
+  const [notifications, setNotifications] = useState([
+    { id: 1, title: "Você ganhou uma nova tarefa!", read: false },
+    { id: 2, title: "Amanhã tem prova de Matemática!", read: false },
+    { id: 3, title: "Novo conteúdo de Ciências disponível.", read: false },
+  ]);
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const unread = notifications.filter(n => !n.read).length;
+
+  function openNotifications() {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    setModalVisible(true);
+  }
+
+  function closeNotifications() {
+    setModalVisible(false);
+  }
+
   return (
     <View style={styles.container}>
 
+      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>StudySync</Text>
 
-        <View style={styles.notificationContainer}>
-          <Feather name="bell" size={28} color="black" />
-          <View style={styles.badge} />
-        </View>
+        <TouchableOpacity
+          style={styles.notificationContainer}
+          onPress={openNotifications}
+        >
+          <Feather name="bell" size={28} color="white" />
+
+          {unread > 0 && <View style={styles.badge} />}
+        </TouchableOpacity>
       </View>
 
+      {/* Modal de notificações */}
+      {modalVisible && (
+        <View style={styles.modalBackground}>
+          <View style={styles.modalBox}>
+            <Text style={styles.modalTitle}>Notificações</Text>
+
+            {notifications.map(n => (
+              <View key={n.id} style={styles.notificationItem}>
+                <Text style={{ color: "white", fontSize: 16, opacity: n.read ? 0.5 : 1 }}>
+                  • {n.title}
+                </Text>
+              </View>
+            ))}
+
+            <TouchableOpacity style={styles.modalButton} onPress={closeNotifications}>
+              <Text style={{ color: "white", fontSize: 18 }}>Fechar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+
+
+      {/* Conteúdo Principal */}
       <ScrollView
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
@@ -23,6 +73,7 @@ export default function Home() {
 
           <Text style={styles.welcome}>Bem-vindo ao StudySync!</Text>
 
+          {/* Status */}
           <View style={styles.statusRow}>
             <View style={styles.statusCard}>
               <Text style={styles.statusNumber}>7</Text>
@@ -68,21 +119,29 @@ export default function Home() {
 
           <Text style={styles.sectionTitle}>Você ainda tem…</Text>
 
-          <View style={styles.listItem}>
+          {/* >>> BOTÃO 1: Projeto de Ciências <<< */}
+          <TouchableOpacity
+            style={styles.listItem}
+            onPress={() => router.push("/timeline")}
+          >
             <View>
               <Text style={styles.listTitle}>Projeto de Ciências</Text>
-              <Text style={styles.listSubtitle}>Prazo: 29 de maio</Text>
+              <Text style={styles.listSubtitle}>Prazo: 29 de novembro</Text>
             </View>
             <Feather name="calendar" size={26} color="white" />
-          </View>
+          </TouchableOpacity>
 
-          <View style={styles.listItem}>
+          {/* >>> BOTÃO 2: Apresentação de História <<< */}
+          <TouchableOpacity
+            style={styles.listItem}
+            onPress={() => router.push("/timeline")}
+          >
             <View>
               <Text style={styles.listTitle}>Apresentação de História</Text>
-              <Text style={styles.listSubtitle}>Prazo: 20 de junho</Text>
+              <Text style={styles.listSubtitle}>Prazo: 20 de novembro</Text>
             </View>
             <Feather name="calendar" size={26} color="white" />
-          </View>
+          </TouchableOpacity>
 
         </View>
       </ScrollView>
@@ -90,6 +149,9 @@ export default function Home() {
   );
 }
 
+
+
+/* ESTILOS */
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -106,9 +168,9 @@ const styles = StyleSheet.create({
   },
 
   headerTitle: {
-    fontSize: 24,
+    fontSize: 26,
     color: "white",
-    fontWeight: "albertusnova_bold",
+    fontWeight: "bold",
   },
 
   notificationContainer: {
@@ -189,5 +251,47 @@ const styles = StyleSheet.create({
 
   listSubtitle: {
     color: "#D3D3D3",
+  },
+
+  modalBackground: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 9999,
+    elevation: 20,
+  },
+
+  modalBox: {
+    backgroundColor: "#444",
+    width: "85%",
+    padding: 20,
+    borderRadius: 15,
+    zIndex: 10000,
+    elevation: 25,
+  },
+
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "white",
+    marginBottom: 15,
+    textAlign: "center",
+  },
+
+  notificationItem: {
+    marginBottom: 12,
+  },
+
+  modalButton: {
+    marginTop: 20,
+    backgroundColor: "#25bb54",
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: "center",
   },
 });
