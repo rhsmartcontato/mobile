@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 50,
-    fontFamily: "albertusnovathin",
+    fontFamily: "albertusnova_bold",
     color: "#fff",
     marginBottom: 1,
   },
@@ -164,6 +164,6 @@ buttonExit: {
 buttonText: {
   color: "#fff",
   fontSize: 20,
-  fontFamily: "clear sans bold", // <<<<<< muda a fonte aqui!
+  fontFamily: "clear sans bold", 
 },
 });

@@ -8,19 +8,19 @@ const StackLayout = () => {
     const segments = useSegments();
 
     useEffect(() => {
-        const inAuthGroup = segments[0] === "(protected)";
+        const inProtected = segments.includes ("(protected)");
 
-        if (!user?.authenticated && inAuthGroup) {
+        if (!user?.authenticated && inProtected) {
             router.replace("/");
-        } else {
-            if (user?.authenticated) {
-                router.replace("/(protected)");
-            }
+        }
+
+        if (user?.authenticated && !inProtected) {
+            router.replace("/(protected)");
         }
     }, [user]);
 
     return (
-        <Stack> 
+        <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />
             <Stack.Screen name="(protected)" options={{ headerShown: false }} />
         </Stack>
