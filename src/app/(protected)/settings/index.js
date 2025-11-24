@@ -21,7 +21,6 @@ export default function Settings() {
                 <Text style={styles.optionText}>Horas de estudo</Text>
             </TouchableOpacity>
 
-            {/* BOTÕES PERIGOSOS */}
             <TouchableOpacity style={styles.deleteButton}>
                 <Text style={styles.deleteButtonText}>Remover conta</Text>
             </TouchableOpacity>

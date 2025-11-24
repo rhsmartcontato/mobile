@@ -22,45 +22,31 @@ export default function Profile() {
                     <Text style={styles.level}>Nível de estudo: Ensino Médio</Text>
                 </View>
 
-
-
-                {/* EMAIL */}
                 <TouchableOpacity onPress={() => router.push("/settings/email")}>
                     <Text style={styles.item}>Email</Text>
                 </TouchableOpacity>
                 <View style={styles.line} />
 
-
-                {/* SENHA */}
                 <TouchableOpacity onPress={() => router.push("/settings/password")}>
                     <Text style={styles.item}>Senha</Text>
                 </TouchableOpacity>
                 <View style={styles.line} />
 
-
-                {/* PROGRESSO */}
-                <TouchableOpacity onPress={() => router.push("/progress")}>
+                <TouchableOpacity onPress={() => router.push("/settings/progress")}>
                     <Text style={styles.item}>Progresso</Text>
                 </TouchableOpacity>
                 <View style={styles.line} />
 
-
-                {/* MATÉRIAS */}
-                <TouchableOpacity onPress={() => router.push("/subjects")}>
+                <TouchableOpacity onPress={() => router.push("/settings/subjects")}>
                     <Text style={styles.item}>Matérias</Text>
                 </TouchableOpacity>
                 <View style={styles.line} />
 
-
-                {/* AGENDA */}
                 <TouchableOpacity onPress={() => router.push("/timeline")}>
                     <Text style={styles.item}>Agenda</Text>
                 </TouchableOpacity>
                 <View style={styles.line} />
 
-
-
-                {/* SAIR */}
                 <TouchableOpacity 
                     style={styles.logout}
                     onPress={() => router.replace("/login")}

@@ -43,7 +43,7 @@ export default function ProtectedLayout() {
             />
 
             <Tabs.Screen
-                name="settings/index"
+                name="settings"
                 options={{
                     title: "Configurações",
                     tabBarIcon: ({ color }) => (
@@ -57,7 +57,7 @@ export default function ProtectedLayout() {
             <Tabs.Screen name="settings/stats" options={{ href: null }} />
             <Tabs.Screen name="settings/email" options={{ href: null }} />
             <Tabs.Screen name="settings/password" options={{ href: null }} />
-            <Tabs.Screen name="settings/subjects" options={{ href: null }} />
+            <Tabs.Screen name="settings/subjects" options={{ href: null }}/>
 
         </Tabs>
     );

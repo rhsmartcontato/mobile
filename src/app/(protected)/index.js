@@ -27,7 +27,6 @@ export default function Home() {
   return (
     <View style={styles.container}>
 
-      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>StudySync</Text>
 
@@ -41,7 +40,6 @@ export default function Home() {
         </TouchableOpacity>
       </View>
 
-      {/* Modal de notificações */}
       {modalVisible && (
         <View style={styles.modalBackground}>
           <View style={styles.modalBox}>
@@ -62,8 +60,6 @@ export default function Home() {
         </View>
       )}
 
-
-      {/* Conteúdo Principal */}
       <ScrollView
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
@@ -73,7 +69,6 @@ export default function Home() {
 
           <Text style={styles.welcome}>Bem-vindo ao StudySync!</Text>
 
-          {/* Status */}
           <View style={styles.statusRow}>
             <View style={styles.statusCard}>
               <Text style={styles.statusNumber}>7</Text>
@@ -119,7 +114,6 @@ export default function Home() {
 
           <Text style={styles.sectionTitle}>Você ainda tem…</Text>
 
-          {/* >>> BOTÃO 1: Projeto de Ciências <<< */}
           <TouchableOpacity
             style={styles.listItem}
             onPress={() => router.push("/timeline")}
@@ -131,7 +125,6 @@ export default function Home() {
             <Feather name="calendar" size={26} color="white" />
           </TouchableOpacity>
 
-          {/* >>> BOTÃO 2: Apresentação de História <<< */}
           <TouchableOpacity
             style={styles.listItem}
             onPress={() => router.push("/timeline")}
@@ -150,8 +143,6 @@ export default function Home() {
 }
 
 
-
-/* ESTILOS */
 const styles = StyleSheet.create({
   container: {
     flex: 1,

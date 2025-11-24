@@ -1,5 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
-import { router } from "expo-router";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, TextInput } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 
@@ -11,18 +10,32 @@ export default function Subjects() {
         { id: 3, name: "Ciências", progress: 12.5, color: "#e75555" },
     ]);
 
+    const [modalVisible, setModalVisible] = useState(false);
+    const [newName, setNewName] = useState("");
+
+    const addSubject = () => {
+        if (!newName.trim()) return;
+
+        const newSubject = {
+            id: Date.now(),
+            name: newName.trim(),
+            progress: 0,
+            color: ["#4CAF50", "#4287f5", "#e75555", "#ff9800", "#9c27b0"][Math.floor(Math.random() * 5)]
+        };
+
+        setSubjects([...subjects, newSubject]);
+        setNewName("");
+        setModalVisible(false);
+    };
+
     return (
-        <ScrollView 
-            style={styles.container}
-            contentContainerStyle={{ paddingBottom: 40 }}
-        >
+        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
             <Text style={styles.title}>Minhas Matérias</Text>
 
             {subjects.map((s) => (
-                <TouchableOpacity 
+                <TouchableOpacity
                     key={s.id}
                     style={[styles.subjectCard, { borderLeftColor: s.color }]}
-                    onPress={() => router.push(`/settings/subjects/${s.id}`)}
                 >
                     <View>
                         <Text style={styles.subjectName}>{s.name}</Text>
@@ -33,10 +46,37 @@ export default function Subjects() {
                 </TouchableOpacity>
             ))}
 
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity style={styles.addButton} onPress={() => setModalVisible(true)}>
                 <Ionicons name="add-circle-outline" size={30} color="white" />
                 <Text style={styles.addText}>Adicionar matéria</Text>
             </TouchableOpacity>
+
+            <Modal visible={modalVisible} transparent animationType="fade">
+                <View style={styles.modalBackground}>
+                    <View style={styles.modalBox}>
+
+                        <Text style={styles.modalTitle}>Nova Matéria</Text>
+
+                        <TextInput
+                            value={newName}
+                            onChangeText={setNewName}
+                            placeholder="Nome da matéria"
+                            placeholderTextColor="#aaa"
+                            style={styles.input}
+                        />
+
+                        <TouchableOpacity style={styles.saveButton} onPress={addSubject}>
+                            <Text style={styles.saveText}>Salvar</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => setModalVisible(false)}>
+                            <Text style={styles.cancelText}>Cancelar</Text>
+                        </TouchableOpacity>
+
+                    </View>
+                </View>
+            </Modal>
+
         </ScrollView>
     );
 }
@@ -91,5 +131,56 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "white",
         fontWeight: "bold",
-    }
+    },
+
+    modalBackground: {
+        flex: 1,
+        backgroundColor: "rgba(0,0,0,0.6)",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 20,
+    },
+
+    modalBox: {
+        width: "100%",
+        backgroundColor: "#3b3b3b",
+        padding: 25,
+        borderRadius: 20,
+    },
+
+    modalTitle: {
+        fontSize: 22,
+        color: "white",
+        fontWeight: "bold",
+        marginBottom: 20,
+    },
+
+    input: {
+        backgroundColor: "#555",
+        padding: 12,
+        borderRadius: 10,
+        fontSize: 18,
+        color: "white",
+        marginBottom: 20,
+    },
+
+    saveButton: {
+        backgroundColor: "#25bb54",
+        padding: 15,
+        borderRadius: 10,
+        alignItems: "center",
+        marginBottom: 10,
+    },
+
+    saveText: {
+        color: "white",
+        fontSize: 18,
+        fontWeight: "bold",
+    },
+
+    cancelText: {
+        color: "#ddd",
+        fontSize: 16,
+        textAlign: "center",
+    },
 });

@@ -67,7 +67,6 @@ export default function Timeline() {
                 </View>
             </View>
 
-            {/* Próximas Tarefas */}
             <View 
                 style={{
                     backgroundColor: "white",
@@ -79,7 +78,6 @@ export default function Timeline() {
                     Próximas tarefas
                 </Text>
 
-                {/* Card 1 */}
                 <View style={{ backgroundColor: "#e7e7e7", padding: 12, borderRadius: 10, marginBottom: 10 }}>
                     <Text style={{ fontSize: 18, fontWeight: "bold" }}>Trabalho de matemática</Text>
                     <Text style={{ marginTop: 5 }}>
@@ -88,7 +86,6 @@ export default function Timeline() {
                     </Text>
                 </View>
 
-                {/* Card 2 */}
                 <View style={{ backgroundColor: "#e7e7e7", padding: 12, borderRadius: 10, marginBottom: 10 }}>
                     <Text style={{ fontSize: 18, fontWeight: "bold" }}>Projeto de ciências</Text>
                     <Text style={{ marginTop: 5 }}>
@@ -97,7 +94,6 @@ export default function Timeline() {
                     </Text>
                 </View>
 
-                {/* Card 3 */}
                 <View style={{ backgroundColor: "#e7e7e7", padding: 12, borderRadius: 10 }}>
                     <Text style={{ fontSize: 18, fontWeight: "bold" }}>Apresentação de história</Text>
                     <Text style={{ marginTop: 5 }}>
