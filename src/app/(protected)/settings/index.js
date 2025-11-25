@@ -1,7 +1,47 @@
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
 import { router } from "expo-router";
+import { useAuth } from "../../../hooks/Auth";  // ajuste se o caminho for outro
 
 export default function Settings() {
+
+    const { deleteAccount, signOut } = useAuth();
+
+    const handleLogout = () => {
+        Alert.alert(
+            "Sair",
+            "Deseja realmente sair?",
+            [
+                { text: "Cancelar", style: "cancel" },
+                {
+                    text: "Sair",
+                    style: "destructive",
+                    onPress: () => {
+                        signOut();
+                        router.replace("/");
+                    }
+                }
+            ]
+        );
+    };
+
+    const handleDeleteAccount = () => {
+        Alert.alert(
+            "Remover conta",
+            "Tem certeza? Essa ação não pode ser desfeita.",
+            [
+                { text: "Cancelar", style: "cancel" },
+                {
+                    text: "Remover",
+                    style: "destructive",
+                    onPress: () => {
+                        deleteAccount();
+                        router.replace("/");
+                    }
+                }
+            ]
+        );
+    };
+
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 50 }}>
             
@@ -21,11 +61,11 @@ export default function Settings() {
                 <Text style={styles.optionText}>Horas de estudo</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.deleteButton}>
+            <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteAccount}>
                 <Text style={styles.deleteButtonText}>Remover conta</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.logoutButton}>
+            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
                 <Text style={styles.deleteButtonText}>Sair</Text>
             </TouchableOpacity>
 

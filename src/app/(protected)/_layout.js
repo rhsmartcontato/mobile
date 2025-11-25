@@ -43,7 +43,7 @@ export default function ProtectedLayout() {
             />
 
             <Tabs.Screen
-                name="settings"
+                name="settings/index"
                 options={{
                     title: "Configurações",
                     tabBarIcon: ({ color }) => (

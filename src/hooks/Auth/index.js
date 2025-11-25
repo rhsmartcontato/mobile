@@ -7,7 +7,7 @@ const AuthContext = createContext({});
 
 export const Role = {
     ALUNO: "ALUNO"
-}
+};
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState({
@@ -16,17 +16,18 @@ export function AuthProvider({ children }) {
         role: null,
     });
 
-    const { authUser } = useUsersDatabase();
+    const { authUser, deleteUser } = useUsersDatabase();
 
     useEffect(() => {
         const loadStorageData = async () => {
             const storageUser = await AsyncStorage.getItem("@payment:user");
 
             if (storageUser) {
+                const parsed = JSON.parse(storageUser);
                 setUser({
                     autenticated: true,
-                    user: JSON.parse(storageUser),
-                    role: JSON.parse(storageUser).role,
+                    user: parsed,
+                    role: parsed.role,
                 });
             } else {
                 setUser({
@@ -40,54 +41,67 @@ export function AuthProvider({ children }) {
         loadStorageData();
     }, []);
 
-
     const signIn = async ({ email, password }) => {
-    console.log("Email digitado:", email);
-    console.log("Senha digitada:", password);
+        const response = await authUser({ email, password });
 
-    const response = await authUser({ email, password });
-    console.log("Resposta do banco:", response);
+        if (!response) {
+            throw new Error("Usuário ou senha inválidos");
+        }
 
-    if (!response) {
-        throw new Error("Usuário ou senha inválidos");
-    }
+        await AsyncStorage.setItem("@payment:user", JSON.stringify(response));
 
-    await AsyncStorage.setItem("@payment:user", JSON.stringify(response));
-
-    setUser({
-        autenticated: true, 
-        user: response,
-        role: response.role,
-    });
-};
+        setUser({
+            autenticated: true,
+            user: response,
+            role: response.role,
+        });
+    };
 
     const signOut = async () => {
         await AsyncStorage.removeItem("@payment:user");
-        setUser({});
+        setUser({
+            autenticated: false,
+            user: null,
+            role: null
+        });
+    };
+
+    const deleteAccount = async () => {
+        if (!user.user?.id) return;
+
+        await deleteUser(user.user.id);   // remove no BD
+        await AsyncStorage.removeItem("@payment:user");
+
+        setUser({
+            autenticated: false,
+            user: null,
+            role: null
+        });
     };
 
     if (user?.autenticated === null) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center"}}>
-        <Text style={{ fontSize: 28, marginTop: 15 }}>
-          Carregando dados do usuário...
-        </Text>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    )
-  }
+        return (
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <Text style={{ fontSize: 28, marginTop: 15 }}>Carregando...</Text>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
 
     return (
-        <AuthContext.Provider value={{ user, signIn, signOut }}>
-          {children}
+        <AuthContext.Provider
+            value={{
+                user,
+                signIn,
+                signOut,
+                deleteAccount,
+            }}
+        >
+            {children}
         </AuthContext.Provider>
     );
 }
 
 export function useAuth() {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error("useAuth must be used within an AuthProvider");
-    }
-    return context;
+    return useContext(AuthContext);
 }

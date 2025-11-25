@@ -8,7 +8,7 @@ export function useUsersDatabase() {
     // ----------------------------------------
     async function authUser({ email, password }) {
         try {
-            // 🔎 Verificar se a tabela existe
+            // Verificar se a tabela existe
             const tables = await database.getAllAsync(`
                 SELECT name 
                 FROM sqlite_master 
@@ -20,19 +20,21 @@ export function useUsersDatabase() {
                 console.warn("⚠️ A tabela USERS não existe! initializeDatabase não rodou!");
             }
 
-            // 🔎 Ver tudo que tem na tabela users (apenas para debug)
+            // Ver todos os usuários (debug)
             const allUsers = await database.getAllAsync(
-                "SELECT id, nome, email, senha, role FROM users"
-            );
-            console.log("📌 Usuários na tabela:", allUsers);
+    "SELECT id, name, email, password, role FROM users"
+);
 
-            // 🔐 Agora tenta logar
+            console.log("Usuários na tabela:", allUsers);
+
+            // Login
             const result = await database.getFirstAsync(
-                `SELECT id, nome, email, role 
-                 FROM users 
-                 WHERE email = ? AND senha = ?`,
-                [email, password]
-            );
+    `SELECT id, name AS nome, email, role 
+     FROM users 
+     WHERE email = ? AND password = ?`,
+    [email, password]
+);
+
 
             console.log("🔍 Resposta do login:", result);
 
@@ -44,7 +46,26 @@ export function useUsersDatabase() {
         }
     }
 
+    // ----------------------------------------
+    // FUNÇÃO DELETAR USUÁRIO
+    // ----------------------------------------
+    async function deleteUser(id) {
+        try {
+            await database.runAsync(
+                "DELETE FROM users WHERE id = ?",
+                [id]
+            );
+
+            console.log("🗑️ Usuário deletado com sucesso:", id);
+
+        } catch (error) {
+            console.error("❌ Erro ao deletar usuário:", error);
+            throw error;
+        }
+    }
+
     return {
         authUser,
+        deleteUser, // <-- AGORA EXPORTADO
     };
 }

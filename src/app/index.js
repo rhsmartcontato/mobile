@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import { router } from "expo-router";
 import { useAuth } from "../hooks/Auth";
 
@@ -6,6 +6,7 @@ export default function Login() {
     const { signIn } = useAuth();
 
     function handleGoogleLogin() {
+        router.push("/loginEmail");
         signIn({
             nome: "Usuário Google",
             email: "alunouser@gmail.com",
@@ -16,9 +17,21 @@ export default function Login() {
     }
 
     function handleFacebookLogin() {
+        router.push("/loginEmail");
         signIn({
             nome: "Usuário Facebook",
             email: "alunouser@facebook.com",
+            role: "ALUNO",
+        });
+
+        router.replace("/(protected)");
+    }
+
+    function handleGuestLogin() {
+        router.push("/loginEmail");
+        signIn({
+            nome: "Convidado",
+            email: "alunouser@studysync.com",
             role: "ALUNO",
         });
 
@@ -36,7 +49,6 @@ export default function Login() {
                 gap: 25,
             }}
         >
-
             <Image
                 source={require("../assets/lampa.png")}
                 style={{ width: 90, height: 90, marginBottom: 15 }}
@@ -66,7 +78,7 @@ export default function Login() {
                     marginTop: -5,
                 }}
             >
-                Organize tarefas de estudo{'\n'}de forma eficiente
+                Organize tarefas de estudo{"\n"}de forma eficiente
             </Text>
 
             <TouchableOpacity
@@ -80,7 +92,7 @@ export default function Login() {
                     width: "100%",
                     gap: 10,
                 }}
-                onPress={handleGoogleLogin}
+                onPress={() => router.push("/loginEmail")}
             >
                 <Image
                     source={require("../assets/google.png")}
@@ -102,7 +114,7 @@ export default function Login() {
                     width: "100%",
                     gap: 10,
                 }}
-                onPress={handleFacebookLogin}
+                onPress={() => router.push("/loginEmail")}
             >
                 <Image
                     source={require("../assets/facebook.webp")}
@@ -135,15 +147,22 @@ export default function Login() {
                 </Text>
             </TouchableOpacity>
 
-            <Text style={{ color: "#fff", marginTop: 10 }}>
-                já tem uma conta?{" "}
-                <Text
-                    style={{ textDecorationLine: "underline", color: "#78a8ff" }}
-                    onPress={() => router.push("/loginEmail")}
-                >
-                    Entrar
-                </Text>
-            </Text>
+           <View style={{ flexDirection: "row", marginTop: 10 }}>
+    <Text style={{ color: "#fff" }}>já tem uma conta? </Text>
+
+    <TouchableOpacity onPress={() => router.push("/loginEmail")}>
+        <Text
+            style={{
+                textDecorationLine: "underline",
+                color: "#78a8ff",
+                fontWeight: "bold",
+            }}
+        >
+            Entrar
+        </Text>
+    </TouchableOpacity>
+</View>
+
 
             <Text
                 style={{
@@ -151,7 +170,7 @@ export default function Login() {
                     color: "#78a8ff",
                     fontSize: 18,
                 }}
-                onPress={() => router.replace("/(protected)")}
+                onPress={handleGuestLogin}
             >
                 entrar sem conta
             </Text>
