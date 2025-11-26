@@ -7,28 +7,13 @@ export default function Login() {
 
     function handleGoogleLogin() {
         router.push("/loginEmail");
-        signIn({
-            nome: "Usuário Google",
-            email: "alunouser@gmail.com",
-            role: "ALUNO",
-        });
-
-        router.replace("/(protected)");
     }
 
     function handleFacebookLogin() {
         router.push("/loginEmail");
-        signIn({
-            nome: "Usuário Facebook",
-            email: "alunouser@facebook.com",
-            role: "ALUNO",
-        });
-
-        router.replace("/(protected)");
     }
 
     function handleGuestLogin() {
-        router.push("/loginEmail");
         signIn({
             nome: "Convidado",
             email: "alunouser@studysync.com",
@@ -92,7 +77,7 @@ export default function Login() {
                     width: "100%",
                     gap: 10,
                 }}
-                onPress={() => router.push("/loginEmail")}
+                onPress={handleGoogleLogin}
             >
                 <Image
                     source={require("../assets/google.png")}
@@ -114,7 +99,7 @@ export default function Login() {
                     width: "100%",
                     gap: 10,
                 }}
-                onPress={() => router.push("/loginEmail")}
+                onPress={handleFacebookLogin}
             >
                 <Image
                     source={require("../assets/facebook.webp")}
@@ -147,22 +132,21 @@ export default function Login() {
                 </Text>
             </TouchableOpacity>
 
-           <View style={{ flexDirection: "row", marginTop: 10 }}>
-    <Text style={{ color: "#fff" }}>já tem uma conta? </Text>
+            <View style={{ flexDirection: "row", marginTop: 10 }}>
+                <Text style={{ color: "#fff" }}>já tem uma conta? </Text>
 
-    <TouchableOpacity onPress={() => router.push("/loginEmail")}>
-        <Text
-            style={{
-                textDecorationLine: "underline",
-                color: "#78a8ff",
-                fontWeight: "bold",
-            }}
-        >
-            Entrar
-        </Text>
-    </TouchableOpacity>
-</View>
-
+                <TouchableOpacity onPress={() => router.push("/loginEmail")}>
+                    <Text
+                        style={{
+                            textDecorationLine: "underline",
+                            color: "#78a8ff",
+                            fontWeight: "bold",
+                        }}
+                    >
+                        Entrar
+                    </Text>
+                </TouchableOpacity>
+            </View>
 
             <Text
                 style={{

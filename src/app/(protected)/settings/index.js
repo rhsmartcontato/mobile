@@ -17,7 +17,7 @@ export default function Settings() {
                     style: "destructive",
                     onPress: () => {
                         signOut();
-                        router.replace("/");
+                        router.replace("/login"); // <-- corrigido
                     }
                 }
             ]
@@ -35,7 +35,7 @@ export default function Settings() {
                     style: "destructive",
                     onPress: () => {
                         deleteAccount();
-                        router.replace("/");
+                        router.replace("/login"); // <-- corrigido
                     }
                 }
             ]

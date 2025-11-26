@@ -4,7 +4,7 @@ export function useUsersDatabase() {
     const database = useSQLiteContext();
 
     // ----------------------------------------
-    // FUNÇÃO DE LOGIN (AUTH)
+    // LOGIN (AUTH)
     // ----------------------------------------
     async function authUser({ email, password }) {
         try {
@@ -14,27 +14,31 @@ export function useUsersDatabase() {
                 FROM sqlite_master 
                 WHERE type='table' AND name='users'
             `);
+
             console.log("Tabelas encontradas:", tables);
 
             if (tables.length === 0) {
                 console.warn("⚠️ A tabela USERS não existe! initializeDatabase não rodou!");
             }
 
-            // Ver todos os usuários (debug)
-            const allUsers = await database.getAllAsync(
-    "SELECT id, name, email, password, role FROM users"
-);
-
+            // Debug: listar todos usuários
+            const allUsers = await database.getAllAsync(`
+                SELECT id, name, email, password, role FROM users
+            `);
             console.log("Usuários na tabela:", allUsers);
 
             // Login
             const result = await database.getFirstAsync(
-    `SELECT id, name AS nome, email, role 
-     FROM users 
-     WHERE email = ? AND password = ?`,
-    [email, password]
-);
-
+                `SELECT 
+                    id, 
+                    name AS nome, 
+                    email, 
+                    password,
+                    role 
+                FROM users 
+                WHERE email = ? AND password = ?`,
+                [email, password]
+            );
 
             console.log("🔍 Resposta do login:", result);
 
@@ -47,7 +51,7 @@ export function useUsersDatabase() {
     }
 
     // ----------------------------------------
-    // FUNÇÃO DELETAR USUÁRIO
+    // DELETAR USUÁRIO
     // ----------------------------------------
     async function deleteUser(id) {
         try {
@@ -66,6 +70,6 @@ export function useUsersDatabase() {
 
     return {
         authUser,
-        deleteUser, // <-- AGORA EXPORTADO
+        deleteUser,
     };
 }
