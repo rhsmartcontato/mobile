@@ -33,7 +33,7 @@ export async function initializeDatabase(database) {
                FOREIGN KEY (licao_id) REFERENCES licoes (id)
             );
 
-            INSERT OR REPLACE INTO users (nome, email, senha, role)
+            INSERT OR REPLACE INTO users (name, email, senha, role)
             VALUES ('Aluno', 'aluno@email.com', 'A123456a!', 'ALUNO');
         `);
 
