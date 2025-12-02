@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
 import { router } from "expo-router";
-import { useAuth } from "../../../hooks/Auth";  // ajuste se o caminho for outro
+import { useAuth } from "../../../hooks/Auth";
 
 export default function Settings() {
 
@@ -17,7 +17,6 @@ export default function Settings() {
                     style: "destructive",
                     onPress: () => {
                         signOut();
-                        router.replace("/login"); // <-- corrigido
                     }
                 }
             ]
@@ -35,7 +34,6 @@ export default function Settings() {
                     style: "destructive",
                     onPress: () => {
                         deleteAccount();
-                        router.replace("/login"); // <-- corrigido
                     }
                 }
             ]

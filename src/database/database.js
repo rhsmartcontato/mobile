@@ -1,7 +1,6 @@
-// database.js
 export async function initializeDatabase(database) {
   try {
-    // Cria a tabela de usuários
+
     await database.execAsync(`
       CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

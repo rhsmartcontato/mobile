@@ -1,12 +1,11 @@
 import { useSQLiteContext } from "expo-sqlite";
-import { initializeDatabase } from './database.js'; // aqui você importa o que acabou de criar
+import { initializeDatabase } from './database.js';
 
 export function useUsersDatabase() {
   const database = useSQLiteContext();
 
   async function authUser({ email, password }) {
     try {
-      // garante que as tabelas existem antes de autenticar
       await initializeDatabase(database);
 
       const result = await database.getFirstAsync(

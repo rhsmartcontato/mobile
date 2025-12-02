@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { View, Text, ActivityIndicator } from "react-native";
 import { useUsersDatabase } from "../../database/useUsersDatabase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
+import api from '../../services/api'; 
 
 const AuthContext = createContext({});
 
@@ -42,34 +44,71 @@ export function AuthProvider({ children }) {
     }, []);
 
     const signIn = async ({ email, password }) => {
-        const response = await authUser({ email, password });
+        try {
+            const response = await api.post('/login', { email, password }); 
 
-        if (!response) {
-            throw new Error("Usuário ou senha inválidos");
+            if (!response || !response.data || !response.data.token) {
+                throw new Error("Usuário ou senha inválidos");
+            }
+            
+            const userData = response.data; 
+
+            await AsyncStorage.setItem("@payment:user", JSON.stringify(userData));
+
+            setUser({
+                autenticated: true,
+                user: userData,
+                role: userData.role, 
+            });
+
+        } catch (error) {
+
+            console.error('Erro na autenticação:', error);
+
+            if (error.response && error.response.status === 401) {
+                throw new Error("Usuário ou senha inválidos");
+            } 
+            else if (error.message.includes("Usuário ou senha inválidos")) {
+                throw error; 
+            } 
+            else {
+                throw new Error("Falha na conexão. Verifique sua rede e tente novamente.");
+            }
         }
-
-        await AsyncStorage.setItem("@payment:user", JSON.stringify(response));
-
-        setUser({
-            autenticated: true,
-            user: response,
-            role: response.role,
-        });
     };
+    const updateProfile = async (data) => {
+        
+        const updatedUser = { 
+            ...user.user, 
+            ...data 
+        };
+
+        await AsyncStorage.setItem("@payment:user", JSON.stringify(updatedUser));
+        
+        setUser({
+            ...user,
+            user: updatedUser,
+        });
+        return updatedUser;
+    };
+
 
     const signOut = async () => {
         await AsyncStorage.removeItem("@payment:user");
+        
         setUser({
             autenticated: false,
             user: null,
             role: null
         });
+        
+        router.replace("/");
     };
 
     const deleteAccount = async () => {
         if (!user.user?.id) return;
 
-        await deleteUser(user.user.id);   // remove no BD
+        await deleteUser(user.user.id);
         await AsyncStorage.removeItem("@payment:user");
 
         setUser({
@@ -77,6 +116,8 @@ export function AuthProvider({ children }) {
             user: null,
             role: null
         });
+        
+        router.replace("/");
     };
 
     if (user?.autenticated === null) {
@@ -95,6 +136,7 @@ export function AuthProvider({ children }) {
                 signIn,
                 signOut,
                 deleteAccount,
+                updateProfile,
             }}
         >
             {children}
